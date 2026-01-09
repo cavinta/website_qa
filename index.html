@@ -6,16 +6,12 @@
     <title>Barangay Complaint and Incident Report System</title>
     <link rel="stylesheet" href="landing.css" />
 </head>
-
 <body>
+    <!-- HEADER -->
     <header>
         <div class="container header-content">
             <div class="logo-section">
-                <img
-                    src=" "
-                    alt="Barangay Seal"
-                    class="logo"
-                />
+                <img src="" alt="Barangay Seal" class="logo" />
                 <div class="logo-text">
                     <h1>Barangay Complaint System</h1>
                     <p>Report incidents and complaints easily</p>
@@ -31,17 +27,16 @@
         </div>
     </header>
 
+    <!-- HERO -->
     <section class="hero">
         <div class="container hero-content">
             <h2>Welcome to the Barangay Complaint and Incident Report System</h2>
-            <p>
-                Your voice matters. Report complaints and incidents quickly and securely.
-            </p>
+            <p>Your voice matters. Report complaints and incidents quickly and securely.</p>
             <a href="#complaint-form" class="cta-button">Submit a Report</a>
-            
         </div>
     </section>
 
+    <!-- FEATURES -->
     <section id="features" class="features">
         <div class="container">
             <div class="section-title">
@@ -68,12 +63,13 @@
         </div>
     </section>
 
+    <!-- COMPLAINT FORM -->
     <section id="complaint-form" class="complaint-form-section">
         <div class="container form-container">
             <h3>Submit Your Complaint or Incident Report</h3>
             <form id="reportForm">
                 <div class="form-group">
-                    <label for="full">Full Name *</label>
+                    <label for="fullname">Full Name *</label>
                     <input type="text" id="fullname" name="fullname" required placeholder="Your full name" />
                 </div>
                 <div class="form-group">
@@ -97,7 +93,6 @@
                         <option value="Traffic Issue">Traffic Issue</option>
                         <option value="Neighbor Dispute">Neighbor Dispute</option>
                         <option value="Garbage">Garbage</option>
-
                         <option value="Others">Others</option>
                     </select>
                 </div>
@@ -126,6 +121,7 @@
         </div>
     </section>
 
+    <!-- FOOTER -->
     <footer id="contact">
         <div class="container footer-content">
             <p>© 2024 Barangay Complaint and Incident Report System. All rights reserved.</p>
@@ -133,64 +129,51 @@
         </div>
     </footer>
 
-    
+    <!-- FIREBASE SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js"></script>
+
     <script>
-        const form = document.getElementById('reportForm');
-        form.addEventListener('submit', function (e) {e.preventDefault();
+      // REPLACE with your Firebase config
+      const firebaseConfig = {
+        apiKey: "YOUR_API_KEY",
+        authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+        databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
+        projectId: "YOUR_PROJECT_ID",
+        storageBucket: "YOUR_PROJECT_ID.appspot.com",
+        messagingSenderId: "YOUR_SENDER_ID",
+        appId: "YOUR_APP_ID"
+      };
 
-            const formData = new FormData(form);
+      const app = firebase.initializeApp(firebaseConfig);
+      const database = firebase.database();
 
-            fetch('report.php', {
-                method: 'POST',
-                body: formData
-                })
+      // FORM SUBMISSION
+      const form = document.getElementById('reportForm');
 
-            .then(response => response.text())
-            .then(data => 
-            {
-            if(data.trim() === "success"){
-                alert('Thank you for submitting your report. We will process it as soon as possible.');
-                form.reset();
-                } 
-            else { alert('Something went wrong: ' + data);}
-            })
-            .catch(error => {alert('Error: ' + error);});
-        });
-</script>
-    <!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js"></script>
-<script>
-  const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-    databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT_ID.appspot.com",
-    messagingSenderId: "SENDER_ID",
-    appId: "APP_ID"
-  };
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
 
-  // Initialize Firebase
-  const app = firebase.initializeApp(firebaseConfig);
-  const database = firebase.database();
-</script
-<script>
-  function saveData() {
-    const name = document.getElementById("name").value;
-    const email = document.getElementById("email").value;
+        const reportData = {
+          fullname: document.getElementById('fullname').value,
+          email: document.getElementById('email').value,
+          phone: document.getElementById('phone').value,
+          complaint_type: document.getElementById('complaint_type').value,
+          location: document.getElementById('location').value,
+          description: document.getElementById('description').value,
+          timestamp: new Date().toISOString()
+        };
 
-    database.ref('users/').push({
-      name: name,
-      email: email
-    });
-
-    alert("Data saved!");
-  }
-</script>
-
-    
+        // Save to Firebase
+        database.ref('reports/').push(reportData)
+          .then(() => {
+            alert('Thank you! Your report has been submitted.');
+            form.reset();
+          })
+          .catch((error) => {
+            alert('Error: ' + error);
+          });
+      });
+    </script>
 </body>
 </html>
-
-
