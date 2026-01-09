@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Barangay Complaint and Incident Report System</title>
+    <link rel="stylesheet" href="landing.css" />
+</head>
+
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo-section">
+                <img
+                    src=" "
+                    alt="Barangay Seal"
+                    class="logo"
+                />
+                <div class="logo-text">
+                    <h1>Barangay Complaint System</h1>
+                    <p>Report incidents and complaints easily</p>
+                </div>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#complaint-form">Report</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container hero-content">
+            <h2>Welcome to the Barangay Complaint and Incident Report System</h2>
+            <p>
+                Your voice matters. Report complaints and incidents quickly and securely.
+            </p>
+            <a href="#complaint-form" class="cta-button">Submit a Report</a>
+            
+        </div>
+    </section>
+
+    <section id="features" class="features">
+        <div class="container">
+            <div class="section-title">
+                <h3>Why Use Our System?</h3>
+                <p>Efficient, transparent, and easy to use complaint reporting platform.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🛡️</div>
+                    <h4>Secure & Confidential</h4>
+                    <p>Your information is protected and handled with care.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h4>Fast Processing</h4>
+                    <p>Complaints are quickly routed to the right barangay officials.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h4>Accessible Anywhere</h4>
+                    <p>Submit reports anytime, anywhere using any device.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="complaint-form" class="complaint-form-section">
+        <div class="container form-container">
+            <h3>Submit Your Complaint or Incident Report</h3>
+            <form id="reportForm">
+                <div class="form-group">
+                    <label for="full">Full Name *</label>
+                    <input type="text" id="fullname" name="fullname" required placeholder="Your full name" />
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" name="email" required placeholder="you@example.com" />
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" placeholder="Optional" />
+                </div>
+                <div class="form-group">
+                    <label for="complaint_type">Complaint Type *</label>
+                    <select id="complaint_type" name="complaint_type" required>
+                        <option value="" disabled selected>Select type</option>
+                        <option value="Accident">Accident</option>
+                        <option value="Fire">Fire</option>
+                        <option value="Medical Emergency">Medical Emergency</option>
+                        <option value="Crime in Progress">Crime in Progress</option>
+                        <option value="Noise Disturbance">Noise Disturbance</option>
+                        <option value="Theft">Theft</option>
+                        <option value="Traffic Issue">Traffic Issue</option>
+                        <option value="Neighbor Dispute">Neighbor Dispute</option>
+                        <option value="Garbage">Garbage</option>
+
+                        <option value="Others">Others</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="location">Location *</label>
+                    <select id="location" name="location" required>
+                        <option value="" disabled selected>Select location</option>
+                        <option value="Zone 1">Zone 1</option>
+                        <option value="Zone 2">Zone 2</option>
+                        <option value="Zone 3">Zone 3</option>
+                        <option value="Zone 4">Zone 4</option>
+                        <option value="Zone 5">Zone 5</option>
+                        <option value="Zone 6">Zone 6</option>
+                        <option value="Zone 7">Zone 7</option>
+                        <option value="Zone 8">Zone 8</option>
+                        <option value="Zone 9">Zone 9</option>
+                        <option value="Zone 10">Zone 10</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description *</label>
+                    <textarea id="description" name="description" rows="5" required placeholder="Describe the incident or complaint"></textarea>
+                </div>
+                <button type="submit" class="submit-button">Submit Report</button>
+            </form>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="container footer-content">
+            <p>© 2024 Barangay Complaint and Incident Report System. All rights reserved.</p>
+            <p>Contact us: barangay@gmail.com | +63 912 345 6789</p>
+        </div>
+    </footer>
+
+    
+    <script>
+        const form = document.getElementById('reportForm');
+        form.addEventListener('submit', function (e) {e.preventDefault();
+
+            const formData = new FormData(form);
+
+            fetch('report.php', {
+                method: 'POST',
+                body: formData
+                })
+
+            .then(response => response.text())
+            .then(data => 
+            {
+            if(data.trim() === "success"){
+                alert('Thank you for submitting your report. We will process it as soon as possible.');
+                form.reset();
+                } 
+            else { alert('Something went wrong: ' + data);}
+            })
+            .catch(error => {alert('Error: ' + error);});
+        });
+</script>
+
+
+    
+</body>
+</html>
+
+
