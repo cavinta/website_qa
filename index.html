@@ -134,7 +134,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js"></script>
 
     <script>
-      // REPLACE with your Firebase config
+      // 🔑 REPLACE with your Firebase project info
       const firebaseConfig = {
         apiKey: "YOUR_API_KEY",
         authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
@@ -148,7 +148,6 @@
       const app = firebase.initializeApp(firebaseConfig);
       const database = firebase.database();
 
-      // FORM SUBMISSION
       const form = document.getElementById('reportForm');
 
       form.addEventListener('submit', function(e) {
@@ -164,7 +163,6 @@
           timestamp: new Date().toISOString()
         };
 
-        // Save to Firebase
         database.ref('reports/').push(reportData)
           .then(() => {
             alert('Thank you! Your report has been submitted.');
