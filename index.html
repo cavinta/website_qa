@@ -129,28 +129,28 @@
         </div>
     </footer>
 
-    <!-- FIREBASE SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js"></script>
+    <!-- FIRESTORE SDK -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.1/firebase-app.js";
+      import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.6.1/firebase-firestore.js";
 
-    <script>
-      // 🔑 REPLACE with your Firebase project info
+      // 🔑 REPLACE these with your Firebase config
       const firebaseConfig = {
         apiKey: "YOUR_API_KEY",
         authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-        databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
         projectId: "YOUR_PROJECT_ID",
         storageBucket: "YOUR_PROJECT_ID.appspot.com",
         messagingSenderId: "YOUR_SENDER_ID",
         appId: "YOUR_APP_ID"
       };
 
-      const app = firebase.initializeApp(firebaseConfig);
-      const database = firebase.database();
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
 
       const form = document.getElementById('reportForm');
 
-      form.addEventListener('submit', function(e) {
+      form.addEventListener('submit', async function(e) {
         e.preventDefault();
 
         const reportData = {
@@ -160,17 +160,16 @@
           complaint_type: document.getElementById('complaint_type').value,
           location: document.getElementById('location').value,
           description: document.getElementById('description').value,
-          timestamp: new Date().toISOString()
+          created_at: serverTimestamp()
         };
 
-        database.ref('reports/').push(reportData)
-          .then(() => {
-            alert('Thank you! Your report has been submitted.');
-            form.reset();
-          })
-          .catch((error) => {
-            alert('Error: ' + error);
-          });
+        try {
+          await addDoc(collection(db, "complaints"), reportData);
+          alert('Thank you! Your report has been submitted.');
+          form.reset();
+        } catch (error) {
+          alert('Error submitting report: ' + error);
+        }
       });
     </script>
 </body>
